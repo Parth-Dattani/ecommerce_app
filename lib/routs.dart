@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/binding/binding.dart';
 import 'package:ecommerce_app/binding/login_binding.dart';
 import 'package:ecommerce_app/binding/register_binding.dart';
+import 'package:ecommerce_app/screen/cart_screen/cart_screen.dart';
 import 'package:ecommerce_app/screen/screen.dart';
 import 'package:get/get.dart';
 
@@ -25,5 +26,11 @@ final List<GetPage> appPage = [
       name: HomeScreen.pageId,
       page: ()=> HomeScreen(),
       binding: HomeBinding()
+  ),
+
+  GetPage(
+      name: CartScreen.pageId,
+      page: ()=> CartScreen(),
+      binding: CartBinding()
   ),
 ];

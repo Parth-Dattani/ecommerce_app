@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/model/Image_Response.dart';
 import 'package:ecommerce_app/screen/cart_screen/cart_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../model/model.dart';
 import '../screen/screen.dart';
+import '../services/service.dart';
 import '../utils/utils.dart';
 import 'controller.dart';
 
@@ -28,6 +32,8 @@ class HomeController extends BaseController {
   Rx<int> quantity = 1.obs;
 
   RxBool isFilter = true.obs;
+  RxList<ImageResponse> resultDataList = <ImageResponse>[].obs;
+
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
     'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
@@ -41,28 +47,8 @@ class HomeController extends BaseController {
   void onInit() {
     super.onInit();
     initList();
-
-/*    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((values) {
-      loggedInUser = UserModel.fromMap(values.data()!);
-      userName.value = loggedInUser.userName.toString();
-      email.value = loggedInUser.email.toString();
-      role.value = loggedInUser.role.toString();
-    });*/
     countUsers();
-
-    //var userRole = loggedInUser.role.toString();
-
-    // if (userRole.toString() == "admin") {
-    //   isAdmin.value = !isAdmin.value;
-    //   isAdmin2.value = !isAdmin2.value!;
-    // }
-    /// for get foreground notification
-    // getToken();
-    // inintMsg();
+    getImages();
   }
 
   initList() {
@@ -100,6 +86,26 @@ class HomeController extends BaseController {
     await FirebaseAuth.instance.signOut();
     sharedPreferencesHelper.clearPrefData();
     Get.offAndToNamed(LoginScreen.pageId);
+  }
+
+  void getImages() async {
+    // try {
+    loader.value = true;
+    var response = await RemoteServices.getImageList();
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      var data = jsonData['results'];
+      if (data.isNotEmpty) {
+        for (var i in data) {
+          resultDataList.add(ImageResponse.fromJson(i));
+        }
+        debugPrint("List : ${resultDataList[0].author}");
+        loader.value = false;
+      } else {
+        loader.value = false;
+      }
+    }
+    // } catch (e) {debugPrint("Error :- ${e.toString()}");}
   }
 
   final CollectionReference<Map<String, dynamic>> userList =

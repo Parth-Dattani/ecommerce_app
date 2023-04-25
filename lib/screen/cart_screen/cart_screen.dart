@@ -15,10 +15,10 @@ class CartScreen extends GetView<CartController> {
   Widget build(BuildContext context) {
     return
       Obx(
-        ()=> CommonLoader(isLoad: controller.loader.value, child: Scaffold(
+        ()=> CommonLoader(isLoad: controller.loader.value, body: Scaffold(
           appBar: AppBar(
             elevation: 0,
-            title: Text("Cart Page"),
+            title: const Text("Cart Page"),
             leading: IconButton(
                 onPressed: () {
                   Get.back();
