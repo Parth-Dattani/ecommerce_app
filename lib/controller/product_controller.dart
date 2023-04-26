@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../model/model.dart';
 import '../services/service.dart';
+import '../utils/utils.dart';
 
 class ProductController extends BaseController{
 
@@ -23,6 +24,7 @@ class ProductController extends BaseController{
     //getNews();
     category = Get.arguments["category"];
     categoryNews(category);
+    getCartData();
     super.onInit();
   }
 
@@ -45,6 +47,15 @@ class ProductController extends BaseController{
       }
     } catch (e) {
       debugPrint("Error :- ${e.toString()}");
+    }
+  }
+
+  Future<void> getCartData() async {
+    var result = await sharedPreferencesHelper.retrievePrefData("addCart");
+    if (result.isNotEmpty) {
+      var list = jsonDecode(result);
+      debugPrint("list : $list");
+      list.map((e) => cartList.add(CategoryResponse.fromJson(e))).toList();
     }
   }
 }

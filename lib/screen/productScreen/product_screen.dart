@@ -157,7 +157,7 @@ class ProductScreen extends GetView<ProductController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("E-Commerce App"),
-                  Text("Cart"),
+                  Text("Cart ${controller.cartList.length}"),
                 ],
               ),
             ),
