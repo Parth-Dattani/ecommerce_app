@@ -7,8 +7,6 @@ class Common {
   static const String strIsLogin = 'is_login';
   static const String strToken = 'str_token';
 
-
-
   static void errorSnackBar(String error, String somethingWentWrong) {
     Get.snackbar(
       error, somethingWentWrong,

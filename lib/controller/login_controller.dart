@@ -11,15 +11,11 @@ import 'controller.dart';
 class LoginController extends BaseController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  //TextEditingController phoneController = TextEditingController();
 
   final loginFormKey = GlobalKey<FormState>();
   final auth = FirebaseAuth.instance;
 
-  CollectionReference ref = FirebaseFirestore.instance.collection('users');
   UserModel loggedInUser = UserModel();
-  RxBool isForgot = false.obs;
-  RxBool isPhone = false.obs;
   RxBool isObscure = true.obs;
   @override
   void onInit() {
@@ -39,7 +35,6 @@ class LoginController extends BaseController {
 
   //register time s.p. store data
   void validateUserAuth() async {
-    print("login into sp");
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     var obtainedEmail = sharedPreferences.getString('email');
@@ -67,47 +62,16 @@ class LoginController extends BaseController {
       debugPrint("user : $user");
 
       if (user != null) {
-        print("user has lg");
         sharedPreferencesHelper.storePrefData(email, emailController.text);
         sharedPreferencesHelper.storePrefData(password, passwordController.text);
         sharedPreferencesHelper.storeBoolPrefData(Common.strIsLogin, true);
         Get.offAndToNamed(HomeScreen.pageId);
       }
-      //Get.offAndToNamed(HomeScreen.pageId);
     } on FirebaseAuthException catch (e) {
       Common.errorSnackBar("error", "somethingWentWrong");
       debugPrint("Something Wrong $e");
     }
   }
-
-  // Future<void> signInwithPhone()async{
-  //   await auth.signInWithPhoneNumber(phoneController.text);
-  // }
-
-  // Future<void> signInwithGoogle()async {
-  //   var googleAuth = await FlutterSocialMediaSignin().signInWithGoogle();
-  //   await auth
-  //   .signInWithCredential(googleAuth)
-  //   .whenComplete(() =>
-  //       sendDataFirestore(auth.currentUser!.displayName.toString(), auth.currentUser!.email.toString(), "user")
-  //   );
-  //   print("success");
-  //   print("authf ${auth}");
-  //   await Get.toNamed(HomeScreen.pageId);
-  // }
-
-  // Future<void> signInwithFB()async{
-  //   var fbAuth = await FlutterSocialMediaSignin().signInWithFacebook();
-  //   await auth
-  //   .signInWithCredential(fbAuth)
-  //   .whenComplete(() =>
-  //       sendDataFirestore(auth.currentUser!.displayName.toString(), auth.currentUser!.email.toString(), "user")
-  //   );
-  //   print("success");
-  //   print("authf ${auth}");
-  //   await Get.toNamed(HomeScreen.pageId);
-  // }
-
 
 
   sendDataFirestore(String userName, String email, /*String rool*/) async {

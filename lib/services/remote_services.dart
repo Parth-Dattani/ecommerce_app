@@ -33,4 +33,29 @@ class RemoteServices {
     return response;
   }
 
+  static Future<http.Response> getCategory() async {
+    Map<String, String> header = {
+      //'Authorization': 'Bearer $accessToken',
+      //'Company':'app'
+    };
+
+    http.Response response = await http.get(
+      Uri.parse(Apis.categoryListApi),
+      headers: header,
+    );
+    printResponse(header, null, response);
+    return response;
+  }
+
+  static Future<http.Response> categoryName(category) async {
+    Map<String, String> header = {
+      //'Authorization': 'Bearer $accessToken'
+    };
+
+    http.Response response = await http.get(
+        Uri.parse(Apis.categoryNavApi + category),
+        headers: header);
+    printResponse(header, null, response);
+    return response;
+  }
 }

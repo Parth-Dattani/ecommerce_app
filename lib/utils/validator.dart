@@ -1,15 +1,6 @@
 class Validator{
   static String? pass;
-  // static String isEmail(String? email){
-  //   //String message = '';
-  //   if(email!.isEmpty){
-  //    return  "please enter email address";
-  //   }
-  //   if (RegExp(r'\S+@\S+\.\S+').hasMatch(email)) {
-  //    return  "Please enter a valid email address";
-  //   }
-  //   return "";
-  // }
+
   static String? isEmail(String? email) {
     if (email!.isEmpty) {
       return 'please enter email address';

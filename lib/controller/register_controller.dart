@@ -19,14 +19,8 @@ class RegisterController extends BaseController {
   RxBool isObscure2 = true.obs;
 
   var currentItemSelected = "user".obs;
-  //var rool = "user".obs;
-
-  //var roleList = ["admin", "user"].obs;
-
-  //a
   final auth = FirebaseAuth.instance;
 
-  //CollectionReference ref = FirebaseFirestore.instance.collection('users');
   get user => auth.currentUser;
 
   Future<void> registerWithValidation() async {
@@ -39,23 +33,7 @@ class RegisterController extends BaseController {
     }
   }
 
-  //only user entry
-  // Future signUp({required String userName, required String email, required String password, required String rool}) async {
-  //   try {
-  //     await auth.createUserWithEmailAndPassword(
-  //       //name : nameController.value.text,
-  //       email: emailController.value.text,
-  //       password: passwordController.value.text,
-  //     );
-  //     return null;
-  //   } on FirebaseAuthException catch (e) {
-  //     return e.message;
-  //   }
-  // }
-  //user entry
-  void signUp(
-      String userName, String email, String password) async {
-    print("success");
+  void signUp(String userName, String email, String password) async {
     loader.value = true;
     const CircularProgressIndicator();
     await auth
@@ -66,15 +44,8 @@ class RegisterController extends BaseController {
       //print("GEt TOKEN $registerToken");
       sendDataFirestore(userName, email);
     }).catchError((e) {});
-    //if (res != null) {
-    // if(auth != null){
-    //   sharedPreferencesHelper.getSharedPreferencesInstance();
-    //   sharedPreferencesHelper.storePrefData(email, emailController.text);
-    //   sharedPreferencesHelper.storePrefData(password, passwordController.text);
-    // }
 
     if (user != null) {
-      print("user ss");
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       sharedPreferences.setString(
@@ -86,20 +57,18 @@ class RegisterController extends BaseController {
     }
 
     loader.value = false;
-    //}
   }
 
   //user store in firestore
   sendDataFirestore(
-      String userName, String email, /*String rool, registerToken*/) async {
+      String userName, String email,) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = auth.currentUser;
     UserModel userModel = UserModel();
     userModel.userName = userName;
     userModel.email = email;
     userModel.uid = user!.uid;
-    //userModel.role = rool;
-    //userModel.registerToken = registerToken;
+
     await firebaseFirestore
         .collection("users")
         .doc(user.uid)

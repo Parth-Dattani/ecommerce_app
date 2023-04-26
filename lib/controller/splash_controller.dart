@@ -23,7 +23,4 @@ class SplashController extends BaseController {
         return Get.offAndToNamed(LoginScreen.pageId);
     }
   }
-
-
-
 }
