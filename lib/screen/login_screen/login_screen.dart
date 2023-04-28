@@ -130,7 +130,7 @@ class LoginScreen extends GetView<LoginController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                        width: Get.width * 0.32, height: 1, color: ColorConfig.colorPrimary),
+                        width: Get.width * 0.3, height: 1, color: ColorConfig.colorPrimary),
                     const Spacer(),
                     const Text(
                       "Sign in With",
@@ -138,7 +138,7 @@ class LoginScreen extends GetView<LoginController> {
                     ),
                     const Spacer(),
                     Container(
-                      width: Get.width * 0.32,
+                      width: Get.width * 0.3,
                       height: 1,
                       color: ColorConfig.colorPrimary,
                     )

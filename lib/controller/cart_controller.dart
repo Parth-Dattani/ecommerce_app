@@ -9,10 +9,13 @@ class CartController extends BaseController {
   RxString productName = "".obs;
   RxList cartData = [].obs;
   RxList<CategoryResponse> cartList = <CategoryResponse>[].obs;
-  Rx<int> quantity = 1.obs;
+  Rx<int> quantity = 0.obs;
 
   @override
   void onInit() {
+    if(Get.arguments != null){
+      quantity.value = Get.arguments["quantity"];
+    }
     getCartData();
     debugPrint("cart Data: $cartData");
     super.onInit();
@@ -26,6 +29,7 @@ class CartController extends BaseController {
       list.map((e) => cartList.add(CategoryResponse.fromJson(e))).toList();
       debugPrint("cart length : ${cartList.length}");
       debugPrint("cart : ${jsonEncode(cartList)}");
+      print("${cartList[0].id}");
     }
   }
 

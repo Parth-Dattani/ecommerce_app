@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecommerce_app/controller/controller.dart';
 import 'package:ecommerce_app/screen/cart_screen/cart_screen.dart';
+import 'package:ecommerce_app/screen/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
@@ -23,9 +24,8 @@ class ProductScreen extends GetView<ProductController> {
             title: "Product Screen",
             leadingIcon: ImagePath.arrowBack,
             leadingOnTap: () {
-              Get.back();
-              debugPrint("TAp");
-              //Scaffold.of(context).openDrawer();
+              controller.getCartData();
+               Get.back();
             },
           ),
           body: SafeArea(
@@ -84,9 +84,7 @@ class ProductScreen extends GetView<ProductController> {
                                             Radius.circular(15)),
                                         child: Center(
                                           child: Image.network(
-                                            controller
-                                                .resultDataList[index].image
-                                                .toString(),
+                                            controller.resultDataList[index].image.toString(),
                                             scale: 2,
                                             height: 90,
                                             width: 200,
@@ -111,14 +109,26 @@ class ProductScreen extends GetView<ProductController> {
                                             .toString()),
                                     CommonButton(
                                       onPressed: () {
-                                        print(
-                                            "cart Data Item :${controller.resultDataList[index].title} ");
-                                        controller.cartList.add(
-                                            controller.resultDataList[index]);
-                                        sharedPreferencesHelper.storePrefData(
-                                            'addCart',
+                                        for (int i = 0; i < controller.cartList.length; i++) {
+                                          if (controller.cartList[i].id == controller.resultDataList[index].id) {
+                                            controller.quantity.value++;
+                                            print("qutity ${controller.quantity}");
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(content: Text("Item already in your cart")));
+                                            //Get.back();
+                                            return;
+                                          }
+                                        }
+                                        print("cart Data Item :${controller.resultDataList[index].title} ");
+                                        controller.cartList.add(controller.resultDataList[index]);
+                                        sharedPreferencesHelper.storePrefData('addCart',
                                             jsonEncode(controller.cartList));
-                                        Get.toNamed(CartScreen.pageId);
+                                        Get.toNamed(CartScreen.pageId,
+                                        arguments: {
+                                          "quantity" : controller.quantity.value
+                                        }
+                                        );
+                                        Common.errorSnackBar("Cart", "Product Added into Cart");
                                       },
                                       color: ColorConfig.colorGreenText,
                                       height: 30,
@@ -137,7 +147,7 @@ class ProductScreen extends GetView<ProductController> {
                               crossAxisCount: 2,
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 18,
-                              childAspectRatio: 0.8),
+                              childAspectRatio: 0.7),
                       itemCount: controller.resultDataList.length,
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,

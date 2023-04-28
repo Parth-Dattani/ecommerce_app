@@ -53,19 +53,15 @@ class HomeController extends BaseController {
         .toList();
     drawerItems.refresh();
     drawerItems[index].title == "Home"
-        ? Get.toNamed(HomeScreen.pageId,
-    )
+        ? Get.back() /*Get.toNamed(HomeScreen.pageId,)*/
         : drawerItems[index].title == "Profile"
         ? Get.toNamed(ProfileScreen.pageId,)
         : drawerItems[index].title == "Cart"
-        ? Get.toNamed(
-      CartScreen.pageId,
-    )
+        ? Get.toNamed(CartScreen.pageId,)
         : drawerItems[index].title == "logout"
         ? logOut()
         : null;
   }
-
   Future<void> logOut() async {
     const CircularProgressIndicator();
     await FirebaseAuth.instance.signOut();
@@ -88,9 +84,6 @@ class HomeController extends BaseController {
         loader.value = false;
       }
     }
-
-
-    // } catch (e) {debugPrint("Error :- ${e.toString()}");}
   }
 
   Future<void> getCartData() async {

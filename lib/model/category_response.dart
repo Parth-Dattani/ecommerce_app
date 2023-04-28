@@ -1,5 +1,6 @@
 class CategoryResponse {
   int? id;
+  int quantity = 0;
   String? title;
   int? price;
   String? description;

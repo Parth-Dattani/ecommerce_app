@@ -18,6 +18,7 @@ class ProductController extends BaseController{
   RxList<CategoryResponse> resultDataList = <CategoryResponse>[].obs;
   RxList<CategoryResponse> cartList = <CategoryResponse>[].obs;
   String? category = 'jewelery';
+  Rx<int> quantity = 1.obs;
 
   @override
   void onInit() {
